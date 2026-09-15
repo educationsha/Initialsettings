@@ -1,0 +1,6 @@
+pymavlink
+mavsdk
+asyncio-mqtt
+pyserial
+websockets
+protobuf
