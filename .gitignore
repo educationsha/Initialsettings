@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.ipynb_checkpoints/
+.vscode/*.log
+runs/
+wandb/
+mlruns/
+models/
+datasets/
+*.pt
+*.pth
+*.onnx
+*.engine
