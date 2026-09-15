@@ -1,0 +1,12 @@
+name: uav-ai
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - -r requirements-base.txt
+      - -r requirements-ai.txt
+      - -r requirements-vision.txt
+      - -r requirements-uav.txt
+      - -r requirements-sim.txt
