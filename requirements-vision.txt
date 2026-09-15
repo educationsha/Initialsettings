@@ -1,0 +1,6 @@
+opencv-python
+Pillow
+scikit-image
+albumentations
+ultralytics
+pycocotools
