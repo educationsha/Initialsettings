@@ -1,0 +1,9 @@
+ms-python.python
+ms-python.vscode-pylance
+ms-toolsai.jupyter
+ms-vscode.cpptools
+ms-vscode.cmake-tools
+twxs.cmake
+redhat.vscode-yaml
+GitHub.copilot
+GitHub.copilot-chat
