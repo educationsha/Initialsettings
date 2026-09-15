@@ -1,0 +1,8 @@
+transformers
+datasets
+accelerate
+safetensors
+huggingface-hub
+einops
+onnx
+onnxruntime-gpu
