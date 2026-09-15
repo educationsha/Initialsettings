@@ -6,8 +6,9 @@ import sys
 def run(cmd):
     try:
         return subprocess.run(cmd, capture_output=True, text=True, check=False)
-    except Exception as exc:
+    except Exception:
         return None
+
 
 print("=" * 60)
 print("        UAV AI / CUDA SETUP CHECK")
@@ -41,6 +42,14 @@ try:
         print("FAIL - CUDA not available")
 except Exception as exc:
     print(f"FAIL - PyTorch error: {exc}")
+
+print("\n[Ultralytics / YOLO]")
+try:
+    import ultralytics
+    print(f"Version : {ultralytics.__version__}")
+    print("PASS - Ultralytics installed")
+except Exception as exc:
+    print(f"FAIL - Ultralytics not installed: {exc}")
 
 print("\n[NVIDIA]")
 if shutil.which("nvidia-smi"):
