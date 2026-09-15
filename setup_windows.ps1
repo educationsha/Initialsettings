@@ -12,23 +12,36 @@ function Test-Command($name) { return $null -ne (Get-Command $name -ErrorAction 
 
 if (-not $SkipSystemChecks) {
     Write-Host "`nChecking system tools..."
-    if (Test-Command "nvidia-smi") { nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader }
-    else { Write-Warning "nvidia-smi not found. Install/update the NVIDIA driver." }
-    if (Test-Command "nvcc") { nvcc --version }
-    else { Write-Warning "nvcc not found. Install CUDA Toolkit if you need CUDA C/C++ compilation." }
+    if (Test-Command "nvidia-smi") {
+        nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader
+        $driver = (nvidia-smi --query-gpu=driver_version --format=csv,noheader | Select-Object -First 1).Trim()
+        try {
+            $driverMajor = [int]($driver.Split('.')[0])
+            if ($driverMajor -lt 580) {
+                Write-Warning "NVIDIA driver $driver is older than the recommended R580+ branch for CUDA 13.x. Upgrade the NVIDIA driver before using CUDA 13.x runtime/tooling."
+            }
+        } catch { Write-Warning "Could not parse NVIDIA driver version: $driver" }
+    } else { Write-Warning "nvidia-smi not found. Install/update the NVIDIA driver." }
+
+    if (Test-Command "nvcc") {
+        nvcc --version
+        Write-Host "Note: nvcc version and the CUDA runtime bundled with PyTorch do not have to match."
+    } else { Write-Warning "nvcc not found. Install CUDA Toolkit if you need CUDA C/C++ compilation." }
+
     if (Test-Command "git") { git --version }
     else { Write-Warning "Git not found." }
 }
 
-if (-not (Test-Command "conda")) { throw "Conda was not found. Install Miniconda/Anaconda, restart PowerShell, then rerun." }
+if (-not (Test-Command "conda")) { throw "Conda was not found. Install Miniconda or Miniforge, restart PowerShell, then rerun." }
 
 $envExists = conda env list | Select-String "uav-ai"
 if (-not $envExists) { conda create -y -n uav-ai python=3.11 }
 conda run -n uav-ai python -m pip install --upgrade pip setuptools wheel
 
-Write-Host "`nInstalling PyTorch..."
-Write-Host "Check https://pytorch.org/get-started/locally/ if the CUDA wheel selector changes."
-conda run -n uav-ai pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+Write-Host "`nInstalling PyTorch GPU build..."
+Write-Host "This setup uses the CUDA 12.6 PyTorch wheel because it is compatible with the current R560 driver and is a documented PyTorch Windows build."
+Write-Host "If you upgrade to an R580+ NVIDIA driver, this can be changed to a CUDA 13.x wheel after verifying the current PyTorch selector."
+conda run -n uav-ai pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 
 conda run -n uav-ai pip install -r requirements-base.txt
 switch ($Profile) {
