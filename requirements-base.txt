@@ -1,0 +1,14 @@
+numpy
+scipy
+pandas
+matplotlib
+scikit-learn
+pyyaml
+requests
+tqdm
+psutil
+rich
+python-dotenv
+jupyterlab
+ipykernel
+tensorboard
