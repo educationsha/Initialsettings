@@ -88,7 +88,21 @@ python check_setup.py
 The checker validates Python, NumPy, PyTorch CUDA, NVIDIA GPU visibility, `nvcc` when present, and OpenCV.
 
 ## CUDA / PyTorch compatibility
+Install the CUDA 13.2 build
+```powershell
+& "$env:USERPROFILE\miniconda3\envs\uav-ai\python.exe" -m pip install --force-reinstall torch==2.14.1 --index-url https://download.pytorch.org/whl/cu132
 
+
+& "$env:USERPROFILE\miniconda3\envs\uav-ai\python.exe" -c "import torch; print('PyTorch:',torch.__version__); print('CUDA build:',torch.version.cuda); print('CUDA available:',torch.cuda.is_available()); print('GPU:',torch.cuda.get_device_name(0)); x=torch.randn(4096,4096,device='cuda'); y=x@x; torch.cuda.synchronize(); print('GPU computation: SUCCESS'); print('Result device:',y.device)"
+
+
+```
+ results:
+- PyTorch version containing +cu132
+- CUDA build showing 13.2
+- CUDA available showing True
+- GPU computation showing SUCCESS
+The official PyTorch package index lists a Windows wheel for Python 3.11 for this version and CUDA build.
 The setup currently uses the official PyTorch CUDA 12.6 wheel because it works with a broad range of NVIDIA driver versions and is a good portable baseline for RTX systems. The NVIDIA driver and system CUDA Toolkit do not have to have the same version as PyTorch's bundled CUDA runtime.
 
 Before changing the pinned PyTorch CUDA wheel for a newer GPU/driver generation, check the current official PyTorch Windows installation selector.
