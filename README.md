@@ -88,6 +88,8 @@ python check_setup.py
 The checker validates Python, NumPy, PyTorch CUDA, NVIDIA GPU visibility, `nvcc` when present, and OpenCV.
 
 ## CUDA / PyTorch compatibility
+Run a compatibility diagnostic
+**check_ai_stack.py inside C:\UAV-AI\Initialsettings**
 Install the CUDA 13.2 build
 ```powershell
 & "$env:USERPROFILE\miniconda3\envs\uav-ai\python.exe" -m pip install --force-reinstall torch==2.14.1 --index-url https://download.pytorch.org/whl/cu132
@@ -106,6 +108,80 @@ The official PyTorch package index lists a Windows wheel for Python 3.11 for thi
 The setup currently uses the official PyTorch CUDA 12.6 wheel because it works with a broad range of NVIDIA driver versions and is a good portable baseline for RTX systems. The NVIDIA driver and system CUDA Toolkit do not have to have the same version as PyTorch's bundled CUDA runtime.
 
 Before changing the pinned PyTorch CUDA wheel for a newer GPU/driver generation, check the current official PyTorch Windows installation selector.
+PS C:\UAV-AI\Initialsettings> & "$env:USERPROFILE\miniconda3\envs\uav-ai\python.exe" .\check_ai_stack.py
+=== UAV AI Environment Diagnostic ===
+Python: 3.11.18 | packaged by Anaconda, Inc. | (main, Oct 26 2026, 18:13:29) [MSC v.1942 64 bit (AMD64)]
+Interpreter: C:\Users\shahu\miniconda3\envs\uav-ai\python.exe
+torch: 2.14.1+cu132
+torchvision: 0.29.1+cu126
+torchaudio: 2.11.0+cu126
+opencv-python: 5.0.0.93
+opencv-python-headless: 5.0.0.93
+ultralytics: 8.4.191
+onnxruntime-gpu: 1.31.1
+numpy: 2.4.6
+
+=== PyTorch / CUDA ===
+PyTorch: 2.14.1+cu132
+CUDA build: 13.2
+CUDA available: True
+GPU matrix multiplication: PASS
+
+**=== Torchvision ===
+Torchvision diagnostic FAILED: RuntimeError('Detected that PyTorch and torchvision were compiled with different CUDA major versions. PyTorch has CUDA Version=13.2 and torchvision has CUDA Version=12.6. Please reinstall the torchvision that matches your PyTorch install.')**
+
+=== OpenCV ===
+OpenCV runtime: 5.0.0
+OpenCV import: PASS
+
+=== ONNX Runtime ===
+ONNX Runtime: 1.31.1
+Available providers: ['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider']
+
+=== Ultralytics ===
+Ultralytics: 8.4.191
+PS C:\UAV-AI\Initialsettings> & "$env:USERPROFILE\miniconda3\envs\uav-ai\python.exe" .\check_ai_stack.py
+=== UAV AI Environment Diagnostic ===
+Python: 3.11.18 | packaged by Anaconda, Inc. | (main, Oct 26 2026, 18:13:29) [MSC v.1942 64 bit (AMD64)]
+Interpreter: C:\Users\shahu\miniconda3\envs\uav-ai\python.exe
+torch: 2.14.1+cu132
+torchvision: 0.29.1+cu132
+torchaudio: 2.11.0+cu126
+opencv-python: 5.0.0.93
+opencv-python-headless: 5.0.0.93
+ultralytics: 8.4.191
+onnxruntime-gpu: 1.31.1
+numpy: 2.4.6
+
+=== PyTorch / CUDA ===
+PyTorch: 2.14.1+cu132
+CUDA build: 13.2
+CUDA available: True
+GPU matrix multiplication: PASS
+```powershell
+& "$env:USERPROFILE\miniconda3\envs\uav-ai\python.exe" -m pip install --force-reinstall --no-deps torchvision==0.29.1+cu132 --index-url https://download.pytorch.org/whl/cu132
+```
+
+Using --no-deps avoids unnecessarily changing your working PyTorch installation.
+
+```powershell
+& "$env:USERPROFILE\miniconda3\envs\uav-ai\python.exe" .\check_ai_stack.py
+```
+**=== Torchvision ===
+Torchvision: 0.29.1+cu132
+NMS operation: tensor([0], device='cuda:0')
+Torchvision operations: PASS**
+
+=== OpenCV ===
+OpenCV runtime: 5.0.0
+OpenCV import: PASS
+
+=== ONNX Runtime ===
+ONNX Runtime: 1.31.1
+Available providers: ['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider']
+
+=== Ultralytics ===
+Ultralytics: 8.4.191
 
 ## Reproducibility
 
