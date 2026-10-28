@@ -13,7 +13,8 @@ It does **not** silently install or replace system-level NVIDIA drivers, CUDA To
 ### 1. Install system prerequisites
 
 Install these first:
-
+miniconda
+https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-arm64.exe
 - NVIDIA driver appropriate for the GPU
 - Git for Windows
 - Miniconda or Miniforge
@@ -53,8 +54,14 @@ Available profiles:
 The installer uses `conda run -n uav-ai`, so it does not depend on PowerShell activation working correctly.
 
 ### 5. Verify
-
+Accept the Anaconda Terms of Service
+These commands register your acceptance for the three channels that blocked environment creation. Review the terms before accepting. 
+GitHub+1
 ```powershell
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/msys2
+
 conda run -n uav-ai python check_setup.py
 ```
 
