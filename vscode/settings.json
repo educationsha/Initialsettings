@@ -1,4 +1,5 @@
 {
+  "python.defaultInterpreterPath": "C:\\Users\\shahu\\miniconda3\\envs\\uav-ai\\python.exe",
   "python.analysis.typeCheckingMode": "basic",
   "editor.formatOnSave": true,
   "files.exclude": {
