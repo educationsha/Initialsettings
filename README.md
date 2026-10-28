@@ -35,8 +35,21 @@ cd Initialsettings
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
-```
 
+First, accept the three Conda channel terms interactively if you have not already done so:
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/msys2
+
+
+Then save the revised script as setup_windows.ps1 in your Initialsettings folder. Make sure all five requirements-*.txt files referenced by the FULL profile and check_setup.py exist in that folder.
+
+Run:
+.\setup_windows.ps1 -Profile FULL
+
+
+Finally, confirm that the environment uses the intended Python:
+```
 ### 4. Install a profile
 
 ```powershell
